@@ -10,14 +10,14 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh 'python3 -m pip install --upgrade pip'
-                sh 'python3 -m pip install -r requirements.txt'
+                bat 'python -m pip install --upgrade pip'
+                bat 'python -m pip install -r requirements.txt'
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh 'python3 -m pytest -v'
+                bat 'python -m pytest -v'
             }
         }
     }
@@ -26,6 +26,7 @@ pipeline {
         success {
             echo 'CI Pipeline Passed: build and tests completed successfully.'
         }
+
         failure {
             echo 'CI Pipeline Failed: check the console output to find the problem.'
         }
