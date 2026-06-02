@@ -1,21 +1,26 @@
 # Jenkins Tool — CI/CD Basics
 
 ## Project Idea
-This mini-project demonstrates a simple CI pipeline using Jenkins. The pipeline automatically pulls code from GitHub, installs Python dependencies, and runs automated tests using pytest.
+
+This mini-project demonstrates a simple Continuous Integration (CI) pipeline using Jenkins. The pipeline connects to a GitHub repository, pulls the latest code, installs Python dependencies, and runs automated tests using pytest.
 
 ## Objective
-Automate build and test for a small Python application using Jenkins.
+
+Automate the build and test process for a small Python application using Jenkins.
 
 ## App Description
-The application is a simple calculator module with four functions:
-- add
-- subtract
-- multiply
-- divide
 
-The project includes automated tests to verify that the functions work correctly.
+The application is a simple calculator module that contains four basic functions:
+
+* add
+* subtract
+* multiply
+* divide
+
+The project also includes automated test cases to verify that all calculator functions work correctly.
 
 ## Project Structure
+
 ```text
 jenkins-ci-basics-project/
 ├── app/
@@ -28,52 +33,154 @@ jenkins-ci-basics-project/
 └── README.md
 ```
 
+## Main Files
+
+### `app/calculator.py`
+
+Contains the main calculator functions.
+
+### `app/main.py`
+
+Runs the calculator application manually for a simple demonstration.
+
+### `tests/test_calculator.py`
+
+Contains pytest test cases for the calculator functions.
+
+### `requirements.txt`
+
+Lists the Python dependencies required by the project.
+
+### `Jenkinsfile`
+
+Defines the Jenkins CI pipeline stages as code.
+
 ## Run Locally
+
+To install the required dependencies:
+
 ```bash
-python3 -m pip install -r requirements.txt
-python3 -m pytest -v
-python3 app/main.py
+python -m pip install -r requirements.txt
+```
+
+To run the automated tests:
+
+```bash
+python -m pytest -v
+```
+
+To run the application manually:
+
+```bash
+python app/main.py
 ```
 
 ## Jenkins Pipeline Stages
-1. Pull Code
-2. Install Dependencies
-3. Run Tests
+
+The Jenkins pipeline contains three main stages:
+
+1. **Pull Code**
+   Jenkins connects to the GitHub repository and gets the latest project files.
+
+2. **Install Dependencies**
+   Jenkins installs the required Python packages from `requirements.txt`.
+
+3. **Run Tests**
+   Jenkins runs the automated test cases using pytest.
+
+## Jenkinsfile Overview
+
+The `Jenkinsfile` is used to define the CI pipeline as code. Since Jenkins is running on Windows in this project, the pipeline uses `bat` commands instead of Linux `sh` commands.
+
+Example:
+
+```groovy
+bat 'python -m pip install -r requirements.txt'
+bat 'python -m pytest -v'
+```
 
 ## Jenkins Setup Steps
-1. Install Jenkins locally or run it with Docker.
-2. Create a new Pipeline job in Jenkins.
-3. Connect the job to the GitHub repository.
-4. Choose Pipeline script from SCM.
-5. Set SCM to Git and paste the GitHub repository URL.
-6. Set branch to `main`.
-7. Set Script Path to `Jenkinsfile`.
-8. Add a build trigger using Poll SCM or GitHub webhook.
-9. Run Build Now and check the console output.
 
-## Poll SCM Example
-For demo purposes, use:
+1. Install Jenkins locally.
+2. Make sure Java and Python are installed.
+3. Create a new Pipeline job in Jenkins.
+4. Connect the job to the GitHub repository.
+5. Choose `Pipeline script from SCM`.
+6. Set SCM to `Git`.
+7. Paste the GitHub repository URL.
+8. Set the branch to `main`.
+9. Set Script Path to `Jenkinsfile`.
+10. Add a build trigger using Poll SCM.
+11. Run the pipeline and check the Console Output.
+
+## Build Trigger: Poll SCM
+
+A build trigger was added using **Poll SCM**.
+
+For demo purposes, the schedule used is:
+
 ```text
 H/2 * * * *
 ```
-This checks GitHub approximately every 2 minutes.
+
+This means Jenkins checks the GitHub repository approximately every two minutes. If Jenkins detects a new commit, it automatically starts the CI pipeline without pressing `Build Now`.
 
 ## Demo Plan
+
 1. Show the GitHub repository structure.
-2. Open Jenkins job configuration.
-3. Show the Jenkinsfile.
-4. Click Build Now.
-5. Open Console Output.
-6. Show successful stages: Pull Code, Install Dependencies, Run Tests.
-7. Optional: break one test, push to GitHub, and show Jenkins failure.
-8. Fix the test and show the pipeline passing again.
+2. Open the `Jenkinsfile` and explain the pipeline stages.
+3. Open the Jenkins job configuration.
+4. Show that the job is connected to GitHub using `Pipeline script from SCM`.
+5. Show the Poll SCM build trigger.
+6. Run the build manually using `Build Now`.
+7. Open Console Output.
+8. Show that Jenkins pulled the code, installed dependencies, and ran tests.
+9. Show the final successful result: `Finished: SUCCESS`.
 
-## Common Challenge and Solution
-Challenge: Jenkins cannot find Python or pip.
-Solution: Install Python on the Jenkins machine and make sure `python3` and `pip` are available in the system PATH.
+## Optional Trigger Demo
 
-Challenge: Jenkins cannot pull from GitHub.
-Solution: Check the repository URL and credentials if the repository is private.
+To demonstrate the Poll SCM trigger:
 
-Challenge: Tests fail in Jenkins but pass locally.
-Solution: Compare Python versions and dependency versions between local machine and Jenkins.
+1. Make a small change in `README.md`.
+2. Commit and push the change to GitHub.
+
+```bash
+git add README.md
+git commit -m "Test Jenkins polling trigger"
+git push
+```
+
+3. Wait about two minutes.
+4. Jenkins should detect the new commit and start a build automatically.
+
+## Common Challenges and Solutions
+
+### Challenge 1: Jenkins cannot find Python or pip
+
+**Solution:**
+Install Python on the Jenkins machine and make sure Python is available in the system PATH.
+
+### Challenge 2: Jenkins fails because of `sh`
+
+**Solution:**
+On Windows, Jenkins should use `bat` commands instead of `sh` commands.
+
+Example:
+
+```groovy
+bat 'python -m pytest -v'
+```
+
+### Challenge 3: Jenkins cannot pull from GitHub
+
+**Solution:**
+Check the GitHub repository URL and make sure the repository is public or that valid credentials are added in Jenkins.
+
+### Challenge 4: Tests fail in Jenkins but pass locally
+
+**Solution:**
+Compare Python versions and dependency versions between the local machine and Jenkins.
+
+## Outcome
+
+By completing this project, we understand the basics of CI pipelines and automation using Jenkins. Jenkins helps automate repetitive development tasks such as pulling code, installing dependencies, and running tests. This improves software quality and helps detect errors early.
