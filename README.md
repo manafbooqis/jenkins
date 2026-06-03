@@ -188,3 +188,4 @@ Polling trigger demo update.
 Polling trigger demo update 2.
 Polling trigger demo update 3.
 Polling trigger demo update 5.
+Polling trigger demo update 7.
