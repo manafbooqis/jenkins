@@ -184,3 +184,4 @@ Compare Python versions and dependency versions between the local machine and Je
 ## Outcome
 
 By completing this project, we understand the basics of CI pipelines and automation using Jenkins. Jenkins helps automate repetitive development tasks such as pulling code, installing dependencies, and running tests. This improves software quality and helps detect errors early.
+Polling trigger demo update.
